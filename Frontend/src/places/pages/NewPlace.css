@@ -1,0 +1,62 @@
+.place-form {
+  list-style: none;
+  margin: 0 auto;
+  padding: 1rem;
+  width: 90%;
+  max-width: 40rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 6px;
+  background: white;
+  margin-top: 10px;
+}
+
+.place-form h2{
+  text-align: center;
+}
+
+.searchbar{
+  display: flex;
+  height: 40px;
+  margin: 0px auto;
+  width: 50%;
+  border: none;
+  border-radius: 50px;
+  text-indent: 10px;
+  font-size: 22px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.search-bar-area{
+  height: 70px;
+  padding-top: 10px;
+}
+
+.searchBtn{
+  position: absolute;
+  height: 30px;
+  top: 0px;
+  right: 4%;
+}
+
+.search{
+  border: none;
+  outline: none;
+  height: 34px;
+  width: 36px;
+  border-radius: 50px;
+  position: absolute;
+  top: 113px;
+  right: 25.7%;
+  background-color: rgb(184, 184, 184);
+}
+
+.search:hover{
+  background-color: rgba(255, 84, 115, 0.916);
+}
+
+.heading{
+  background-color: white;
+  margin: 7px;
+  display: flex;
+  justify-content: center;
+}
