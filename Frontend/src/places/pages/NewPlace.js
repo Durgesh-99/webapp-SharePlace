@@ -79,7 +79,7 @@ const submitHandler = async event=>{
       <Input
         id="description"
         element="textarea"
-        label="Review"
+        label="Description"
         validators={[VALIDATOR_MINLENGTH(5)]}
         errorText="Please enter a valid description (at least 5 characters)."
         onInput={inputHandler}

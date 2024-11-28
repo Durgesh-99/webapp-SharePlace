@@ -1,10 +1,10 @@
-const fs = require('fs')
 const {validationResult} = require('express-validator')
+const streamifier = require('streamifier');
 const HttpError = require('../models/http-error')
 const Place = require('../models/place')
 const User = require('../models/user')
 const { default: mongoose } = require('mongoose')
-const { ObjectId } = require('mongodb')
+const { v2: cloudinary } = require('cloudinary');
 
 const getPlaces = async (req,res,next)=>{
     let places
@@ -81,6 +81,33 @@ const getPlacesByUserId = async (req,res,next)=>{
     res.json({places: places.map(place=>place.toObject({getters:true}))}) 
 }
 
+// Configure Cloudinary (add these to your .env file)
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// Async function to upload file to Cloudinary
+async function uploadToCloudinary(fileBuffer, publicId) {
+    return new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream(
+            { 
+                public_id: publicId, 
+                folder: 'MERN_App_Users',
+                allowed_formats: ['jpg', 'png', 'jpeg', 'gif']
+            },
+            (error, result) => {
+                if (error) {
+                    console.error('Cloudinary upload error:', error);
+                    return reject(new Error('Failed to upload image to Cloudinary'));
+                }
+                resolve(result.secure_url);
+            }
+        ).end(fileBuffer);
+    });
+}
+
 const createPlace = async (req,res,next)=>{
     const error = validationResult(req)
     if(!error.isEmpty()){
@@ -88,13 +115,22 @@ const createPlace = async (req,res,next)=>{
     }
     
     const {title,description,location,address}=req.body
+
+    // Upload image to Cloudinary
+    let imageUrl;
+    try {
+        const publicId = `${title}_${Date.now()}`;
+        imageUrl = await uploadToCloudinary(req.file.buffer, publicId);
+    } catch (err) {
+        return next(new HttpError('Failed to upload image.', 500));
+    }
     
     const createdPlace = new Place({
         title,
         description,
         address,
         location,
-        image: req.file.path,
+        image: imageUrl,
         creator: req.userData.userId
     })
     
@@ -194,11 +230,13 @@ const deletePlace = async (req,res,next)=>{
           return next(error);
     }
 
-    const imagePath = place.image
+    const imageUrl = place.image;
+    const imagePublicId = imageUrl.split('/').slice(-2, -1)[0];
 
     try{
         const sess = await mongoose.startSession()
         sess.startTransaction()
+        await cloudinary.uploader.destroy(imagePublicId);
         await place.deleteOne({session: sess})
         place.creator.places.pull(place)
         await place.creator.save({session: sess})
@@ -207,9 +245,6 @@ const deletePlace = async (req,res,next)=>{
         const error = new HttpError('Something went wrong, could not delete place.',500)
         return next(error)
     }
-    fs.unlink(imagePath, err=>{
-        console.log(err)
-    })
 
     res.status(200).json({message: 'Deleted Place'})
 }

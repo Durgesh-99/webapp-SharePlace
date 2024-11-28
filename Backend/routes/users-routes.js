@@ -1,8 +1,13 @@
 const express = require('express')
 const {check} = require('express-validator')
 const usersControllers = require('../controllers/users-controllers')
-const fileUpload = require('../middleware/file-upload')
 const router = express.Router()
+const multer = require('multer')
+
+const fileUpload = multer({
+    storage: multer.memoryStorage(), // Store file in memory buffer
+    limits: { fileSize: 5 * 1024 * 1024 } // Limit file size to 5MB
+});
 
 router.get('/', usersControllers.getUsers)
 

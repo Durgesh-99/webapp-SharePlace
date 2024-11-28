@@ -2,7 +2,7 @@ const express = require('express')
 const {check} = require('express-validator')
 const placeControllers = require('../controllers/places-controllers')
 const router = express.Router()
-const fileUpload = require('../middleware/file-upload')
+const multer = require('multer')
 const checkauth = require('../middleware/check-auth')
 
 router.get('/', placeControllers.getPlaces)
@@ -14,6 +14,11 @@ router.get('/:pid', placeControllers.getPlaceById)
 router.get('/user/:uid', placeControllers.getPlacesByUserId)
 
 router.use(checkauth)
+
+const fileUpload = multer({
+    storage: multer.memoryStorage(), // Store file in memory buffer
+    limits: { fileSize: 5 * 1024 * 1024 } // Limit file size to 5MB
+});
 
 router.post('/',
 fileUpload.single('image'),
