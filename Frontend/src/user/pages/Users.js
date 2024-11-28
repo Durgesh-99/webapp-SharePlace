@@ -11,7 +11,6 @@ const Users = () => {
 
   useEffect(()=>{
     const fetchUsers = async () =>{
-      console.log(window.location.origin)
       try{
         const responseData = await sendRequest(`${process.env.REACT_APP_API}/users`)
 

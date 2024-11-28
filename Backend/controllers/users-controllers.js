@@ -19,7 +19,6 @@ const getUsers = async (req,res,next)=>{
 
 const login = async (req,res,next)=>{
     const {email, password} = req.body;
-    console.log('Users got')
     let existingUser
     try{
         existingUser = await User.findOne({email:email})

@@ -18,6 +18,12 @@ app.use(bodyParser.json())
 app.use('/api/places',placesRoutes)
 app.use('/api/users', usersRoutes)
 
+const _dirname = path.resolve();
+app.use(express.static(path.join(_dirname,"/Frontend/build")))
+app.get('*',(req,res)=>{
+   res.sendFile(path.resolve(_dirname,"Frontend","build","index.html")) 
+})
+
 app.use((req,res,next)=>{
     throw new HttpError('Could not find this route.',404)
 })

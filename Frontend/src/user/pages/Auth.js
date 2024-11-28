@@ -81,7 +81,6 @@ const Auth = () => {
 
     } else {
       try {
-        console.log(process.env.REACT_APP_API)
         const formData = new FormData()
         formData.append('email',formState.inputs.email.value)
         formData.append('name',formState.inputs.name.value)
@@ -94,7 +93,6 @@ const Auth = () => {
         )
 
         auth.login(responseData.userId, responseData.token);
-        console.log(responseData)
       } catch (err) {}
     }
   };
