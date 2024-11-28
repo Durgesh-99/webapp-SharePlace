@@ -29,7 +29,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-.connect(`mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.elxa07e.mongodb.net/${process.env.NAME}?retryWrites=true&w=majority`)
+.connect(`${process.env.URL}`)
 .then(()=>{
     app.listen(5000, ()=>{
         console.log(`Server is running on PORT=${process.env.PORT}`)
