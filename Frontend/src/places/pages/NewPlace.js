@@ -53,7 +53,7 @@ const submitHandler = async event=>{
         formData.append('address',formState.inputs.address.value)
         formData.append('location',formState.inputs.location.value)
         formData.append('image',formState.inputs.image.value)
-        await sendRequest(`${process.env.REACT_APP_API}/places/`,'POST',formData, {
+        await sendRequest(`${window.env.REACT_APP_API}/places/`,'POST',formData, {
           Authorization: 'Bearer '+auth.token
         })
 

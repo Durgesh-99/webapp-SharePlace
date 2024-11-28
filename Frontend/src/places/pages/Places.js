@@ -16,7 +16,7 @@ const Places = () =>{
     useEffect(()=>{
         const fetchPlaces = async ()=>{
             try{
-                const responseData = await sendRequest(`${process.env.REACT_APP_API}/places`)
+                const responseData = await sendRequest(`${window.env.REACT_APP_API}/places`)
                 setLoadedPlaces(responseData.places)
             }catch(err){
 
@@ -29,7 +29,7 @@ const Places = () =>{
         event.preventDefault();
         try{
             const responseData = await sendRequest(
-                `${process.env.REACT_APP_API}/places/search`,
+                `${window.env.REACT_APP_API}/places/search`,
                 'POST',
                 JSON.stringify({
                     search: inputData

@@ -37,7 +37,7 @@ const UpdatePlace = () => {
     const fetchPlace = async () => {
       try {
         const responseData = await sendRequest(
-          `${process.env.REACT_APP_API}/places/${placeId}`
+          `${window.env.REACT_APP_API}/places/${placeId}`
         );
         setLoadedPlace(responseData.place);
         setFormData(
@@ -63,7 +63,7 @@ const UpdatePlace = () => {
     event.preventDefault();
     try {
       await sendRequest(
-        `${process.env.REACT_APP_API}/places/${placeId}`,
+        `${window.env.REACT_APP_API}/places/${placeId}`,
         'PATCH',
         JSON.stringify({
           title: formState.inputs.title.value,
