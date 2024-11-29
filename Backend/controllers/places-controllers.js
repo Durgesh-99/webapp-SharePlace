@@ -94,7 +94,7 @@ async function uploadToCloudinary(fileBuffer, publicId) {
         cloudinary.uploader.upload_stream(
             { 
                 public_id: publicId, 
-                folder: 'MERN_App_Users',
+                folder: 'SharePlace',
                 allowed_formats: ['jpg', 'png', 'jpeg', 'gif']
             },
             (error, result) => {
